@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module rename-to='whereismystreetcar'>
+
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+
+	<entry-point class='ca.wimsc.client.Whereismystreetcar' />
+
+	<!-- v3 -->
+	<inherits name='com.google.gwt.maps.Maps' />
+
+	<inherits name='com.google.code.gwt.geolocation.Html5Geolocation' />
+	<inherits name='com.google.code.gwt.storage.Html5Storage' />
+	<inherits name='com.google.gwt.http.HTTP' />
+
+	<script src="http://maps.google.com/maps/api/js?sensor=false" />
+	<script src="/js/MapTiler.js" />
+
+	<inherits name="com.google.gwt.resources.Resources" />
+
+	<define-property name="wimsc.mobile" values="mobile,normal" />
+	<property-provider name="wimsc.mobile">
+                <![CDATA[
+        if ($wnd.runningMobile) {
+            return 'mobile';
+        } else {
+            return 'normal';
+        }
+                ]]>
+	</property-provider>
+    <replace-with class="ca.wimsc.client.mobile.MapOuterPanelMobile">
+        <when-type-is class="ca.wimsc.client.common.map.BaseMapOuterPanel" />
+        <any>
+            <when-property-is name="wimsc.mobile" value="mobile" />
+        </any>
+    </replace-with>
+    <replace-with class="ca.wimsc.client.normal.MapOuterPanelNormal">
+        <when-type-is class="ca.wimsc.client.common.map.BaseMapOuterPanel" />
+        <all>
+            <when-property-is name="wimsc.mobile" value="normal" />
+	        <none>
+                <when-property-is name="user.agent" value="ie6" />
+                <when-property-is name="user.agent" value="ie8" />
+	        </none>
+        </all>
+    </replace-with>
+    <replace-with class="ca.wimsc.client.normal.MapOuterPanelNormalMsie">
+        <when-type-is class="ca.wimsc.client.common.map.BaseMapOuterPanel" />
+        <all>
+            <when-property-is name="wimsc.mobile" value="normal" />
+	        <any>
+	            <when-property-is name="user.agent" value="ie6" />
+	            <when-property-is name="user.agent" value="ie8" />
+	        </any>
+        </all>
+    </replace-with>
+
+
+	<replace-with class="ca.wimsc.client.normal.vehicles.VehicleMarkerFactoryMsie">
+		<when-type-is class="ca.wimsc.client.normal.vehicles.VehicleMarkerFactory" />
+		<any>
+			<when-property-is name="user.agent" value="ie6" />
+			<when-property-is name="user.agent" value="ie8" />
+		</any>
+	</replace-with>
+
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+	<source path='shared' />
+
+</module>
+ 
